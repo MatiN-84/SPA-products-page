@@ -1,13 +1,8 @@
-/* @tailwind base;
-@tailwind components;
-@tailwind utilities; */
-/* *{
-  @apply box-border;
-  @apply p-0 m-0;
-
-} */
 
 
-
-
-
+body {
+  font-family: "Poppins", sans-serif;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}

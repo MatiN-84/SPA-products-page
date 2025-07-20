@@ -1,6 +1,6 @@
 import React from "react";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
-import HomePage from "./Pages/HomePage.jsx";
+import HomePage from "./Pages/HomePage.js";
 import About from "./Pages/About.jsx";
 import Cart from "./Pages/Cart.jsx";
 import ProductDetails from "./Pages/ProductDetails.jsx";
