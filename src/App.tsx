@@ -1,12 +1,21 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import HomePage from "./Pages/HomePage.js";
 import About from "./Pages/About.jsx";
 import Cart from "./Pages/Cart.jsx";
 import ProductDetails from "./Pages/ProductDetails.jsx";
-import Products from "./Pages/Products.jsx";
+import Products from "./Pages/Products.js";
 import Layout from "./Layout/Layout.jsx";
+import { useDispatch } from "react-redux";
+import { fetchProducts } from "./features/fetch/fetchSlice.js";
 function App() {
+
+    const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchProducts());
+
+  }, []);
   return (
     
       <BrowserRouter>
