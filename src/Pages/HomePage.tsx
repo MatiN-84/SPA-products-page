@@ -1,5 +1,6 @@
 import React from "react";
 import { FaCreditCard, FaUndoAlt, FaTruck } from "react-icons/fa";
+import { useSelector } from "react-redux";
 
 const array: Object[] = [
   {
@@ -18,7 +19,12 @@ const array: Object[] = [
     text: "You are always welcome to return or exchange for free in any H&M store in the US, excluding Puerto Rico. You have 30 days to decide if an item is right for you",
   },
 ];
+
+
 function HomePage() {
+
+const data  = useSelector(state=> state.fetchData.items)
+
   return (
     <div className="relative overflow-hidden mt-20 ">
       <div className="w-35 h-35 absolute bg-[yellow] opacity-70 rounded-full -left-10 z-[-1]"></div>
@@ -57,6 +63,7 @@ function HomePage() {
 
       <div>
         <h2>Most popular products</h2>
+        <div></div>
       </div>
 
       <div className="mt-10 mx-auto  w-[750px]">
