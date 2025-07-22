@@ -1,16 +1,10 @@
-import { useEffect } from "react";
 import { FaBars, FaTh } from "react-icons/fa";
 import { useSelector } from "react-redux";
-import { shortProducts } from "../helpers/helper";
-
 import { Spinner } from "@material-tailwind/react";
-const categories: string[] = [
-  "All",
-  "Men's Clothing",
-  "Jewelery",
-  "Electronics",
-  "Women's Clothing",
-];
+import Product from "../components/Product";
+import Sidebar from "../components/Sidebar";
+
+
 
 function Products() {
   const products = useSelector((state) => state.fetchData);
@@ -23,31 +17,7 @@ function Products() {
         </div>
       ) : (
         <div className="flex  ">
-          <div className=" fixed  ">
-            <div>
-              <input type="text" placeholder="Search" />
-            </div>
-            <div>
-              <h2>Category</h2>
-              <div>
-                <ul>
-                  {categories.map((item) => (
-                    <li key={item}>{item}</li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-
-            <div>
-              <h2>Price</h2>
-              <p>$999.99</p>
-              <progress></progress>
-            </div>
-
-            <div>
-              <button>Reset Filters</button>
-            </div>
-          </div>
+          <Sidebar/>
 
           <div className="w-[1050px] ml-[250px]">
             <div className="flex items-center justify-between">
@@ -62,24 +32,7 @@ function Products() {
 
             <div className="flex flex-wrap">
               {products.items.map((item: object) => (
-                <div className="w-[33%] p-10" key={item.id}>
-                  <div className="flex w-[100%] h-[300px] items-center">
-                    <img
-                      className="w-[100%] max-h-[300px] "
-                      src={item.image}
-                      alt={item.title}
-                    />
-                  </div>
-                  <p className="text-[1.5rem] text-[#075985]">
-                    {shortProducts(item.title)}
-                  </p>
-                  <div className="mt-4">
-                    <p className="text-[#e11d48] text-[1.5rem]">
-                      {" "}
-                      ${item.price}
-                    </p>
-                  </div>
-                </div>
+                <Product item={item}/>
               ))}
             </div>
           </div>
