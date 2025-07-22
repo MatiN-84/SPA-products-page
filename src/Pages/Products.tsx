@@ -8,7 +8,6 @@ import Sidebar from "../components/Sidebar";
 
 function Products() {
   const products = useSelector((state) => state.fetchData);
-  console.log(products);
   return (
     <>
       {products.status == "loading" ? (

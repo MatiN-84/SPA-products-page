@@ -24,8 +24,8 @@ function HomePage() {
       </div>
 
       <Services />
-      
-      <MostPopular />
+
+      <MostPopular data={data}/>
 
       <div className="mt-10 mx-auto  w-[750px]">
         <h3 className="text-[#6b7280] text-[2rem] ">
