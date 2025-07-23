@@ -24,6 +24,7 @@ const searchProducts =(products , search)=> {
 const filterProducts = (products, category) => {
   if(!category||category === 'all') return products;
   return products.filter((item)=> item.category === category);
+  
 }
 
 const getInitialQuery = (searchParams) => {
@@ -47,5 +48,10 @@ const createQueryObject = (currentQuery , newQuery)=> {
   return { ...currentQuery, ...newQuery };
 }
 
-export { shortProducts, give3PupolarProducts, getInitialQuery, searchProducts , filterProducts , createQueryObject };
+const giveProductsNumber  = (products) => {
+
+  if(products.length===0)return 0;
+  return products.reduce((count, product) => count + 1, 0);
+}
+export { shortProducts, give3PupolarProducts, getInitialQuery, searchProducts , filterProducts , createQueryObject, giveProductsNumber};
 
