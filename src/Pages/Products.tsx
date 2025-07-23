@@ -3,20 +3,43 @@ import { useSelector } from "react-redux";
 import { Spinner } from "@material-tailwind/react";
 import Product from "../components/Product";
 import Sidebar from "../components/Sidebar";
-
-
+import { useSearchParams } from "react-router-dom";
+import {  useEffect, useState } from "react";
+import {   filterProducts, getInitialQuery, searchProducts } from "../helpers/helper";
 
 function Products() {
-  const products = useSelector((state) => state.fetchData);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const fetchData = useSelector((state) => state.fetchData);
+  const [query, setQuery] = useState({});
+  const [search, setSearch] = useState("");
+  const [displayed, setDisplayed] = useState("");
+
+  useEffect(() => {
+    setQuery(getInitialQuery(searchParams));
+    setDisplayed(fetchData);
+    console.log("this is query"+JSON.stringify(query));
+  }, [fetchData]);
+
+  useEffect(() => {
+    setSearchParams(query);
+    setSearch(query.search || "");
+    let finalProducts = filterProducts(searchProducts(fetchData.items , query.search) , query.category);
+    setDisplayed(finalProducts);
+  }, [query]);
+
+  // useEffect(()=> {
+  //   setQuery(searchParams)
+  // }, [searchParams])
+
   return (
     <>
-      {products.status == "loading" ? (
+      {fetchData.status == "loading" ? (
         <div className=" h-300 flex justify-center">
           <Spinner className="mt-10 h-19 w-19 " />
         </div>
       ) : (
         <div className="flex  ">
-          <Sidebar/>
+          <Sidebar search={search} setQuery={setQuery} setSearch={setSearch} query={query} />
 
           <div className="w-[1050px] ml-[250px]">
             <div className="flex items-center justify-between">
@@ -30,8 +53,8 @@ function Products() {
             </div>
 
             <div className="flex flex-wrap">
-              {products.items.map((item: object) => (
-                <Product item={item}/>
+              {fetchData.items.map((item: object) => (
+                <Product item={item} />
               ))}
             </div>
           </div>

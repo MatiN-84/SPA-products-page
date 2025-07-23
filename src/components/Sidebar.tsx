@@ -1,6 +1,16 @@
 import React from "react";
 import categories from "../Constants/categories";
-function Sidebar() {
+import { createQueryObject } from "../helpers/helper";
+function Sidebar({ setQuery, search, setSearch, query }) {
+  const searchHandler = (e) => {
+    setSearch(e.target.value.toLowerCase().trim());
+    setQuery((prevQuery) =>
+      createQueryObject(prevQuery, {
+        ...prevQuery,
+        search: e.target.value.toLowerCase().trim(),
+      })
+    );
+  };
   return (
     <div className=" fixed p-2 ">
       <div>
@@ -8,6 +18,8 @@ function Sidebar() {
           className="bg-[#efeff0] rounded p-3"
           type="text"
           placeholder="Search"
+          onChange={searchHandler}
+          value={search}
         />
       </div>
       <div className="mt-5">
@@ -15,9 +27,26 @@ function Sidebar() {
         <div>
           <ul>
             {categories.map((item) => (
+              
               <li
-                className="text-[#155e75] text-[1.1rem] mt-[5px] ml-2"
+              
+                className={
+                  (item.toLocaleLowerCase() === query.category ||
+                  (item.toLowerCase() === "all" && !query.category)
+                    ? "border-red-700 border-b-2"
+                    : null) +
+                  " " +
+                  "hover:ml-6 cursor-pointer text-[#155e75] text-[1.1rem] mt-[5px] ml-2  transition-all w-40 p-1"
+                }
                 key={item}
+                onClick={(e) =>
+                  setQuery((query) =>
+                    createQueryObject(query, {
+                      ...query,
+                      category: e.target.innerText.toLowerCase(),
+                    })
+                  )
+                }
               >
                 {item}
               </li>
