@@ -1,7 +1,7 @@
 import React from "react";
 import categories from "../Constants/categories";
 import { createQueryObject } from "../helpers/helper";
-function Sidebar({ setQuery, search, setSearch, query, priceRange , setPriceRange}) {
+function Sidebar({ setQuery, search, setSearch, query  }) {
   const searchHandler = (e) => {
     setSearch(e.target.value.toLowerCase().trim());
     setQuery((prevQuery) =>
@@ -57,8 +57,8 @@ function Sidebar({ setQuery, search, setSearch, query, priceRange , setPriceRang
 
       <div className="mt-5">
         <h2 className="text-[1.5rem] text-[#075985]">Price</h2>
-        <p className="text-[#e11d48] text-[1.3rem]">${priceRange}</p>
-        <input type="range" name="price" min="0" max="1000" value={priceRange} onChange={(e)=> setPriceRange(e.target.value)}/>
+        <p className="text-[#e11d48] text-[1.3rem]">${query.priceRange||1000}</p>
+        <input type="range" name="price" min="0" max="1000" value={query.priceRange} onChange={(e)=> setQuery(query=>(createQueryObject(query,{...query , priceRange:e.target.value})))}/>
       </div>
 
       <div>

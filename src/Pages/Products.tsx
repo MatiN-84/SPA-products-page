@@ -7,6 +7,7 @@ import { useSearchParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Select from "react-select";
 import {
+  createQueryObject,
   filterProducts,
   getInitialQuery,
   getInRangeProducts,
@@ -26,12 +27,10 @@ import { FiPackage } from "react-icons/fi";
 function Products() {
   const [searchParams, setSearchParams] = useSearchParams();
   const fetchData = useSelector((state) => state.fetchData);
-  const [query, setQuery] = useState({});
+  const [query, setQuery] = useState({ priceRange: 1000 });
   const [search, setSearch] = useState("");
   const [displayed, setDisplayed] = useState([]);
   const [productCounter, setProductCounter] = useState(0);
-  const [priceRange, setPriceRange] = useState(1000);
-  const [selectedOption, setSelectedOption] = useState(options[3]);
   const [productsDisplayStyle, setProductsDisplayStyle] = useState("GRID");
 
   useEffect(() => {
@@ -45,12 +44,12 @@ function Products() {
 
     let finalProducts = searchProducts(fetchData.items, query.search);
     finalProducts = filterProducts(finalProducts, query.category);
-    finalProducts = getInRangeProducts(finalProducts, priceRange);
-    finalProducts = sortTheProducts(finalProducts, selectedOption.value);
+    finalProducts = getInRangeProducts(finalProducts, query.priceRange);
+    finalProducts = sortTheProducts(finalProducts, query.sortby);
 
     setProductCounter(giveProductsNumber(finalProducts));
     setDisplayed(finalProducts);
-  }, [query, priceRange, selectedOption]);
+  }, [query]);
 
   // useEffect(()=> {
   //   setQuery(searchParams)
@@ -65,8 +64,6 @@ function Products() {
       ) : (
         <div className="flex  ">
           <Sidebar
-            setPriceRange={setPriceRange}
-            priceRange={priceRange}
             search={search}
             setQuery={setQuery}
             setSearch={setSearch}
@@ -99,8 +96,15 @@ function Products() {
               <div className=" w-100 h-1 bg-red-500"></div>
               <div className="text-[#6b7280]">
                 <Select
-                  value={selectedOption}
-                  onChange={(option) => setSelectedOption(option)}
+                  value={query.sortby.value}
+                  onChange={(option) =>
+                    setQuery((query) =>
+                      createQueryObject(query, {
+                        ...query,
+                        sortby: option.value,
+                      })
+                    )
+                  }
                   options={options}
                   placeholder="sort By:"
                 />

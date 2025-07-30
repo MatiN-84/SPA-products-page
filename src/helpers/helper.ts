@@ -8,7 +8,7 @@ const give3PupolarProducts = (data: object) => {
   let sortedData = [...data];
   sortedData.forEach((user, i, arr) => {
     for (let j = i + 1; j < arr.length; j++) {
-      if (arr[i].rating.rate > arr[j].rating.rate) {
+      if (arr[i].rating.rate < arr[j].rating.rate) {
         [arr[i], arr[j]] = [arr[j], arr[i]];
       }
     }
@@ -31,12 +31,23 @@ const getInitialQuery = (searchParams) => {
   const query = {};
   const category = searchParams.get("category");
   const search = searchParams.get("search");
+  const PriceRange = searchParams.get("priceRange")
+  const sortedOption = searchParams.get("sortby")
   if (category) query.category = category;
   if (search) query.search = search;
+  if (PriceRange) query.priceRange = PriceRange;
+  if (sortedOption) query.sortby = sortedOption.value;
+  
   return query;
 };
 
 const createQueryObject = (currentQuery, newQuery) => {
+
+  if(+newQuery.priceRange===1000){
+
+    const {priceRange , ...rest} = currentQuery
+    return rest
+  }
   if (newQuery.category === "all") {
     const { category, ...rest } = currentQuery;
     return rest;
@@ -54,7 +65,7 @@ const giveProductsNumber = (products) => {
   return products.reduce((count, product) => count + 1, 0);
 };
 
-const getInRangeProducts = (products, range) => {
+const getInRangeProducts = (products, range = 1000) => {
   const newProducts = products.filter((product) => product.price < range);
   const newProducts2 = products.filter((product) => product.price > range);
 
@@ -63,6 +74,8 @@ const getInRangeProducts = (products, range) => {
 
 const sortTheProducts = (products, sortOption) => {
   switch (sortOption) {
+    case undefined :
+      return products
     case "a-z":
       const sortedProductsAtoZ = products.sort((a, b) =>
         a.title.toLowerCase().localeCompare(b.title.toLowerCase())
