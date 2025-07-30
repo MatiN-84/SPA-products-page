@@ -49,52 +49,50 @@ const createQueryObject = (currentQuery, newQuery) => {
 };
 
 const giveProductsNumber = (products) => {
+  // if(!products) return -123
   if (products.length === 0) return 0;
   return products.reduce((count, product) => count + 1, 0);
 };
 
 const getInRangeProducts = (products, range) => {
-  const newProducts =  products.filter((product) => product.price < range);
-  const newProducts2 =  products.filter((product) => product.price > range);
-  
-  console.log(newProducts2);
-  return newProducts
+  const newProducts = products.filter((product) => product.price < range);
+  const newProducts2 = products.filter((product) => product.price > range);
+
+  return newProducts;
 };
 
-const sortTheProducts = (products , sortOption)=> {
-  switch(sortOption){
+const sortTheProducts = (products, sortOption) => {
+  switch (sortOption) {
     case "a-z":
-      console.log("1");
-      break;
-      
-    case "z-a":
+      const sortedProductsAtoZ = products.sort((a, b) =>
+        a.title.toLowerCase().localeCompare(b.title.toLowerCase())
+      );
+      return sortedProductsAtoZ;
 
-      console.log("2");
-      break;
-      
+    case "z-a":
+      const sortedProductsZtoA = products.sort((a, b) =>
+        b.title.toLowerCase().localeCompare(a.title.toLowerCase())
+      );
+      return sortedProductsZtoA;
 
     case "highest":
-      console.log("3");
-      break;
-
+      const sortedProductsHighPrice = products.sort((a,b)=>b.price - a.price)
+      return sortedProductsHighPrice;
 
     case "lowest":
-      console.log("4");
-      break;
+      const sortedProductsLowPrice = products.sort((a,b)=>  a.price- b.price)
+      return sortedProductsLowPrice;
 
-    default :
+    default:
       console.log(sortOption);
       throw new Error("unknown option");
-    
-
   }
-}
+};
 
-const findDetails= (id , products)=> {
-
-  const item  = products.find(product => product.id===+id)
-  return item
-}
+const findDetails = (id, products) => {
+  const item = products.find((product) => product.id === +id);
+  return item;
+};
 export {
   shortProducts,
   give3PupolarProducts,

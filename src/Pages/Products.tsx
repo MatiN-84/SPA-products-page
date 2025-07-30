@@ -15,6 +15,12 @@ import {
   sortTheProducts,
 } from "../helpers/helper";
 
+const options = [
+  { value: "a-z", label: "name (a-z)" },
+  { value: "z-a", label: "name (z-a)" },
+  { value: "highest", label: "price (highes)" },
+  { value: "lowest", label: "price (lowest)" },
+];
 import { FiPackage } from "react-icons/fi";
 
 function Products() {
@@ -25,7 +31,8 @@ function Products() {
   const [displayed, setDisplayed] = useState([]);
   const [productCounter, setProductCounter] = useState(0);
   const [priceRange, setPriceRange] = useState(1000);
-  const [selectedOption, setSelectedOption] = useState("highest");
+  const [selectedOption, setSelectedOption] = useState(options[3]);
+  const [productsDisplayStyle, setProductsDisplayStyle] = useState("GRID");
 
   useEffect(() => {
     setQuery(getInitialQuery(searchParams));
@@ -39,23 +46,15 @@ function Products() {
     let finalProducts = searchProducts(fetchData.items, query.search);
     finalProducts = filterProducts(finalProducts, query.category);
     finalProducts = getInRangeProducts(finalProducts, priceRange);
-    sortTheProducts(finalProducts,selectedOption)
-  
+    finalProducts = sortTheProducts(finalProducts, selectedOption.value);
+
     setProductCounter(giveProductsNumber(finalProducts));
     setDisplayed(finalProducts);
-  }, [query, priceRange , selectedOption]);
+  }, [query, priceRange, selectedOption]);
 
   // useEffect(()=> {
   //   setQuery(searchParams)
   // }, [searchParams])
-
-  const options = [
-    { value: "z-a", label: "name (a-z)" },
-    { value: "a-z", label: "name (z-a)" },
-    { value: "highest", label: "price (highes)" },
-    { value: "lowest", label: "price (lowest)" },
-  ];
-
 
   return (
     <>
@@ -75,17 +74,33 @@ function Products() {
           />
 
           <div className="w-[1050px] ml-[250px]">
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between mb-4">
               <div className="flex gap-2">
-                <FaTh className="text-[#155e75] cursor-pointer text-[30px]" />
-                <FaBars className="text-[#155e75] cursor-pointer text-[30px]" />
+                <FaTh
+                  className={
+                    (productsDisplayStyle === "GRID"
+                      ? "border-2 border-green-700"
+                      : null) +
+                    " p-[2px] rounded text-[#155e75] cursor-pointer text-[30px] hover:opacity-70 transition-all duraiton-300 "
+                  }
+                  onClick={() => setProductsDisplayStyle("GRID")}
+                />
+                <FaBars
+                  className={
+                    (productsDisplayStyle === "LIST"
+                      ? "border-2 border-green-700"
+                      : null) +
+                    " p-[2px] rounded text-[#155e75] cursor-pointer text-[30px] hover:opacity-70 transition-all duraiton-300 "
+                  }
+                  onClick={() => setProductsDisplayStyle("LIST")}
+                />
               </div>
               <div className="text-[#6b7280]">{productCounter} Items found</div>
               <div className=" w-100 h-1 bg-red-500"></div>
               <div className="text-[#6b7280]">
                 <Select
                   value={selectedOption}
-                  onChange={setSelectedOption}
+                  onChange={(option) => setSelectedOption(option)}
                   options={options}
                   placeholder="sort By:"
                 />
@@ -95,7 +110,11 @@ function Products() {
             <div className="flex flex-wrap">
               {displayed.length !== 0 ? (
                 displayed.map((item: object) => (
-                  <Product item={item} key={item.id} />
+                  <Product
+                    item={item}
+                    key={item.id}
+                    displayStyle={productsDisplayStyle}
+                  />
                 ))
               ) : (
                 <div className="w-[100%] h-120 flex justify-center items-center text-center text-[#5b5b5b] text-[50px]">
