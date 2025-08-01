@@ -58,7 +58,7 @@ function Sidebar({ setQuery, search, setSearch, query  }) {
       <div className="mt-5">
         <h2 className="text-[1.5rem] text-[#075985]">Price</h2>
         <p className="text-[#e11d48] text-[1.3rem]">${query.priceRange||1000}</p>
-        <input type="range" name="price" min="0" max="1000" value={query.priceRange} onChange={(e)=> setQuery(query=>(createQueryObject(query,{...query , priceRange:e.target.value})))}/>
+        <input type="range" name="price" min="0" max="1000" value={query.priceRange||1000} onChange={(e)=> setQuery(query=>(createQueryObject(query,{...query , priceRange:e.target.value})))}/>
       </div>
 
       <div>

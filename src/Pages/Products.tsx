@@ -96,7 +96,7 @@ function Products() {
               <div className=" w-100 h-1 bg-red-500"></div>
               <div className="text-[#6b7280]">
                 <Select
-                  value={query.sortby.value}
+                  value={query.sortby?.value}
                   onChange={(option) =>
                     setQuery((query) =>
                       createQueryObject(query, {
