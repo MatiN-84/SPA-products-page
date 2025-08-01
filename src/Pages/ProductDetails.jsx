@@ -19,10 +19,13 @@ function ProductDetails() {
 
     if (!productInCart ) {
       dispatch(addProduct(product));
+      
     }else if(productInCart){
-      dispatch(increaseNumberOfProducts({id,number:2}))
+      dispatch(increaseNumberOfProducts({id,number:1}))
     }
-    
+    console.log(cartData.totalItems);
+    console.log(cartData.totalPrice);
+
     console.log(cartData.cartProducts);
   };
   return (
