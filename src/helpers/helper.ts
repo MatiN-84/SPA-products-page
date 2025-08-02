@@ -97,7 +97,7 @@ const sortTheProducts = (products, sortOption) => {
       return sortedProductsLowPrice;
 
     default:
-      console.log(sortOption);
+   
       throw new Error("unknown option");
   }
 };

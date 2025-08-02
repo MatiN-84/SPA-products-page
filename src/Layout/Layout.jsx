@@ -4,7 +4,10 @@ import { MdShoppingCart } from "react-icons/md";
 import { MdStore } from "react-icons/md";
 import { NavLink } from "react-router-dom";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 function Layout({ children }) {
+  const cartProductsNumber = useSelector(data=> data.cartData.totalItems)
+  
   const MENU = [
     { name: "Home", path: "/Homepage" },
     { name: "Products", path: "/products" },
@@ -41,7 +44,7 @@ function Layout({ children }) {
           </ul>
         </div>
         <NavLink to="./cart" className={({isActive})=>(isActive? "border-b-3 border-red-500 ":null)+"cartBox relative"}>
-          <div className="absolute bottom-6 left-6 bg-red-700  rounded-full  w-6 h-6 flex items-center justify-center text-white" >0</div>
+          <div className="absolute bottom-6 left-6 bg-red-700  rounded-full  w-6 h-6 flex items-center justify-center text-white" >{cartProductsNumber}</div>
           
           <MdShoppingCart  className="text-[#155e75] w-8 h-8 cursor-pointer " />
         </NavLink>

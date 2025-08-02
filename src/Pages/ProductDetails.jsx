@@ -3,7 +3,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import { FiPlus, FiMinus } from "react-icons/fi";
 import { findDetails } from "../helpers/helper";
-import { addProduct, increaseNumberOfProducts } from "../features/Cart/cartSlice";
+import {
+  addProduct,
+  increaseNumberOfProducts,
+} from "../features/Cart/cartSlice";
+import { Spinner } from "@material-tailwind/react";
 function ProductDetails() {
   const dispatch = useDispatch();
   const cartData = useSelector((data) => data.cartData);
@@ -11,23 +15,24 @@ function ProductDetails() {
   const id = useParams().id;
   const data = useSelector((data) => data.fetchData.items);
 
-  const [productCart, setProductCart] = useState();
-
+  const [numberOfProduct, setNumberOfProduct] = useState(1);
   const product = findDetails(id, data);
   const clickHandler = () => {
-    const productInCart = cartData.cartProducts.find((item) => item.product.id === +id);
+    const productInCart = cartData.cartProducts.find(
+      (item) => item.product.id === +id
+    );
 
-    if (!productInCart ) {
+    if (!productInCart) {
       dispatch(addProduct(product));
-      
-    }else if(productInCart){
-      dispatch(increaseNumberOfProducts({id,number:1}))
-    }
-    console.log(cartData.totalItems);
-    console.log(cartData.totalPrice);
+      dispatch(increaseNumberOfProducts({ id, number: numberOfProduct-1 }));
 
-    console.log(cartData.cartProducts);
+    } else if (productInCart) {
+      dispatch(increaseNumberOfProducts({ id, number: numberOfProduct }));
+    }
+
+
   };
+
   return (
     <div className="flex">
       {product ? (
@@ -60,26 +65,36 @@ function ProductDetails() {
             <p className=" mt-2 text-[#6b7280]"> {product.description}</p>
             <div>
               <div className="mt-15 flex items-center text-[60px]">
-                <span className="cursor-pointer bg-red-500 rounded-2xl">
+                <span
+                  className="cursor-pointer bg-red-500 rounded-2xl"
+                  onClick={(e) =>{setNumberOfProduct((prev) => prev - 1)} }
+                >
                   <FiMinus color="white" size={40} />
                 </span>
-                <span className="">1</span>
-                <span className="cursor-pointer bg-green-500 rounded-2xl">
+                <span className="m-4">{numberOfProduct}</span>
+                <span
+                  className="cursor-pointer bg-green-500 rounded-2xl"
+                  onClick={(e) => setNumberOfProduct((prev) => prev + 1)}
+                >
                   <FiPlus color="white" size={40} />
                 </span>
               </div>
             </div>
-
-            <button
-              onClick={clickHandler}
-              className="text-[1.3rem] text-green-600 border-2 border-green-600 p-2 rounded-xl hover:text-white hover:bg-green-600 cursor-pointer transition-all duration-300"
-            >
-              Add to cart
-            </button>
+            <Link to="/cart">
+              {" "}
+              <button
+                onClick={clickHandler}
+                className="text-[1.3rem] text-green-600 border-2 border-green-600 p-2 rounded-xl hover:text-white hover:bg-green-600 cursor-pointer transition-all duration-300"
+              >
+                Add to cart
+              </button>
+            </Link>
           </div>
         </>
       ) : (
-        <div>Loading . . .</div>
+        <div className="">
+          <Spinner className="mt-10 h-19 w-19 " />
+        </div>
       )}
     </div>
   );
