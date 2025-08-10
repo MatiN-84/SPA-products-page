@@ -8,14 +8,37 @@ import {
   removeProduct,
 } from "../features/Cart/cartSlice";
 
-function BuyedProduct({ item }) {
+
+interface Product {
+  id: number;
+  title: string;
+  price: number;
+  image: string;
+}
+
+
+interface CartItem {
+  product: Product;
+  count: number;
+}
+
+
+interface BuyedProductProps {
+  item: CartItem;
+}
+
+const BuyedProduct: React.FC<BuyedProductProps> = ({ item }) => {
   const dispatch = useDispatch();
 
   return (
     <div className="flex">
       <div className="flex">
         <div className="p-3 mr-3 w-20">
-          <img className="max-w-20 max-h-20" src={item.product.image} alt="" />
+          <img
+            className="max-w-20 max-h-20"
+            src={item.product.image}
+            alt={item.product.title}
+          />
         </div>
 
         <div className="w-40 flex flex-col justify-around text-[15px]">
@@ -23,44 +46,43 @@ function BuyedProduct({ item }) {
             {item.product.title}
           </p>
 
-          <p className="text-[19px]  text-[#6b7280]">
-            ${item.product.price} X {item.count}
+          <p className="text-[19px] text-[#6b7280]">
+            ${item.product.price} × {item.count}
           </p>
-          <p className="text-[19px]  text-[#e11d48]">
+          <p className="text-[19px] text-[#e11d48]">
             ${(item.product.price * item.count).toFixed(2)}
           </p>
         </div>
-      </div>{" "}
+      </div>
+
       <div className="mt-15 flex items-center text-[20px]">
         <span
           className="cursor-pointer bg-red-500 rounded-2xl"
-          onClick={(e) => {
-            dispatch(decreaseNumofProducts({ id: item.product.id }));
-          }}
+          onClick={() => dispatch(decreaseNumofProducts({ id: item.product.id }))}
         >
           <FiMinus color="white" size={20} />
         </span>
+
         <span className="m-4">{item.count}</span>
+
         <span
           className="cursor-pointer bg-green-500 rounded-2xl"
-          onClick={(e) => {
-            dispatch(
-              increaseNumberOfProducts({ id: item.product.id, number: 1 })
-            );
-          }}
+          onClick={() =>
+            dispatch(increaseNumberOfProducts({ id: item.product.id, number: 1 }))
+          }
         >
           <FiPlus color="white" size={20} />
         </span>
 
-        <button className="text-red-500 hover:text-red-700"
-            onClick={(e)=>dispatch(removeProduct({id:item.product.id}))}
+        <button
+          className="text-red-500 hover:text-red-700"
+          onClick={() => dispatch(removeProduct({ id: item.product.id }))}
         >
-          
           <FaTrash className="cursor-pointer ml-10" />
         </button>
       </div>
     </div>
   );
-}
+};
 
 export default BuyedProduct;

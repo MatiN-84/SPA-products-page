@@ -1,19 +1,37 @@
 import { createSlice, current } from "@reduxjs/toolkit";
 
+interface Product {
+  id:number|string;
+  price:number;
+}
+
+interface CartItem {
+  product:Product;
+  count:number;
+}
+interface CartState {
+  cartProducts: CartItem[];
+  totalItems: number;
+  totalPrice: number;
+}
+
+
 const savedState =  JSON.parse(localStorage.getItem("state") )
 console.log(savedState);
-const initialState = {
+
+
+const initialState :CartState = {
   cartProducts: savedState?.cartProducts|| [],
   totalItems: savedState?.totalItems||0,
   totalPrice:savedState?.totalPrice|| 0,
 };
 
 
-const setProductsToLocalStorage = (state)=> {
+const setProductsToLocalStorage = (state:CartState) => {
   console.log(state);
   localStorage.setItem("state", JSON.stringify(state));
 }
-const calculateTotals = (state) => {
+const calculateTotals = (state:CartState) => {
   state.totalItems = state.cartProducts.reduce(
     (sum, current) => sum + current.count,
     0

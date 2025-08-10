@@ -1,7 +1,13 @@
+import { FaTruck, FaCreditCard, FaUndoAlt } from "react-icons/fa";
+import { ReactNode } from "react";
 
-import { FaTruck, FaCreditCard, FaUndoAlt } from 'react-icons/fa';
+interface Service {
+  icon: ReactNode;
+  title: string;
+  text: string;
+}
 
-const servicesData = [
+const servicesData: Service[] = [
   {
     icon: <FaTruck />,
     title: "Delivery",

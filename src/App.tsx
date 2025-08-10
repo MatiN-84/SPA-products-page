@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import HomePage from "./Pages/HomePage.js";
-import About from "./Pages/About.jsx";
-import Cart from "./Pages/Cart.jsx";
-import ProductDetails from "./Pages/ProductDetails.jsx";
+import About from "./Pages/About.js";
+import Cart from "./Pages/Cart.js";
+import ProductDetails from "./Pages/ProductDetails.js";
 import Products from "./Pages/Products.js";
-import Layout from "./Layout/Layout.jsx";
+import Layout from "./Layout/Layout.js";
 import { useDispatch } from "react-redux";
 import { fetchProducts } from "./features/fetch/fetchSlice.js";
 function App() {
